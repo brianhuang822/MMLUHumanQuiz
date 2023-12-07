@@ -166,7 +166,7 @@ function checkAnswer(selectedOption) {
     if (selectedOption === correctOption) {
         correctAnswers++;
     }
-        displayCorrectAnswer(questions[currentQuestionIndex].question, correctOption, selectedOption === correctOption);
+        displayCorrectAnswer(questions[currentQuestionIndex].question, question[currentQuestionIndex].options[String.fromCharCode(65 + correctOption)], selectedOption === correctOption);
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
         displayQuestion();
@@ -183,7 +183,8 @@ function displayCorrectAnswer(lastQuestion, correctOption, wasCorrect) {
     lastQuestionDisplay.style.display = 'none';
 }
 function showLastQuestion() {
-    lastQuestionDisplay.style.display = 'none';
+    let lastQuestionDisplay = document.getElementById('lastQuestionDisplay');
+    lastQuestionDisplay.style.display = 'block';
 }
 
 function nextQuestion() {
