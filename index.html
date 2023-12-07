@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz App</title>
+</head>
+<body>
+    <div>
+        <select id="subjectSelect">
+            <!-- Options will be populated here -->
+        </select>
+        <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+    <div id="quizContainer" style="display:none;">
+        <div id="question"></div>
+        <div id="options">
+            <!-- Options will be populated here -->
+        </div>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+    <div id="stats">
+        <!-- Statistics will be displayed here -->
+    </div>
+</body>
+<script src="quiz.js"></script>
+</html>
