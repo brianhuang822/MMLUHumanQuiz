@@ -3,6 +3,26 @@ let questions = [];
 let currentQuestionIndex = 0;
 let correctAnswers = 0;
 
+//https://stackoverflow.com/a/2450976
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex > 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+
 function loadSubjects() {
     // Example subjects - replace with actual file names
     const subjects = ["abstract_algebra.csv", "anatomy.csv", "astronomy.csv", "business_ethics.csv", "clinical_knowledge.csv", "college_biology.csv", "college_chemistry.csv", "college_computer_science.csv", "college_mathematics.csv", "college_medicine.csv", "college_physics.csv", "computer_security.csv", "conceptual_physics.csv", "econometrics.csv", "electrical_engineering.csv", "elementary_mathematics.csv", "formal_logic.csv", "global_facts.csv", "high_school_biology.csv", "high_school_chemistry.csv", "high_school_computer_science.csv", "high_school_european_history.csv", "high_school_geography.csv", "high_school_government_and_politics.csv", "high_school_macroeconomics.csv", "high_school_mathematics.csv", "high_school_microeconomics.csv", "high_school_physics.csv", "high_school_psychology.csv", "high_school_statistics.csv", "high_school_us_history.csv", "high_school_world_history.csv", "human_aging.csv", "human_sexuality.csv", "international_law.csv", "jurisprudence.csv", "logical_fallacies.csv", "machine_learning.csv", "management.csv", "marketing.csv", "medical_genetics.csv", "miscellaneous.csv", "moral_disputes.csv", "moral_scenarios.csv", "nutrition.csv", "philosophy.csv", "prehistory.csv", "professional_accounting.csv", "professional_law.csv", "professional_medicine.csv", "professional_psychology.csv", "public_relations.csv", "security_studies.csv", "sociology.csv", "us_foreign_policy.csv", "virology.csv", "world_religions.csv"];
@@ -65,7 +85,7 @@ function loadQuestions(subject) {
     fetchCsv(url)
         .then(parseCsv)
         .then(loadedQuestions => {
-            questions = loadedQuestions;
+            questions = shuffle(loadedQuestions);
             currentQuestionIndex = 0;
             correctAnswers = 0;
             displayQuestion();
