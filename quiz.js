@@ -21,7 +21,7 @@ function fetchCsv(url) {
 
 function parseCsv(csv) {
     const lines = csv.split('\n');
-    return lines.map(line => parseCsvLine(line));
+    return lines.map(line => parseCsvLine(line)).filter(line => line !== null);
 }
 
 function parseCsvLine(line) {
@@ -32,14 +32,15 @@ function parseCsvLine(line) {
     for (let i = 0; i < line.length; i++) {
         const char = line[i];
 
-        if (char === '"' && (i === 0 || line[i - 1] === ',')) {
+        if (char === '"' && (i === 0 || i+1 === line.length || line[i - 1] === ',' || line[i + 1] === ',')) {
             // Toggle the inQuotes flag if we're at the start of a new quoted field
             inQuotes = !inQuotes;
         } else if (char === ',' && !inQuotes) {
             // If we hit a comma and we're not within quotes, push the field to the result
             result.push(current.trim());
             current = '';
-        } else {
+        } else if (
+        else {
             current += char;
         }
     }
