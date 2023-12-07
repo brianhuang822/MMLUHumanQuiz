@@ -69,7 +69,7 @@ function parseCsvLine(line) {
     result.push(current.trim());
 
     // Assuming the format: question, option A, option B, option C, option D, answer
-    if (result.length === 6) {
+    if (result.length === 6 && (result[5] === "A" || result[5] === "B" || result[5] === "C" || result[5] === "D")) {
         const [question, optA, optB, optC, optD, answer] = result;
         return { question, options: [optA, optB, optC, optD], answer };
     } else {
