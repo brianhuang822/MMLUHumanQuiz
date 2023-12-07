@@ -166,12 +166,24 @@ function checkAnswer(selectedOption) {
     if (selectedOption === correctOption) {
         correctAnswers++;
     }
+        displayCorrectAnswer(questions[currentQuestionIndex].question, correctOption, selectedOption === correctOption);
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
         displayQuestion();
     } else {
         endQuiz();
     }
+}
+function displayCorrectAnswer(lastQuestion, correctOption, wasCorrect) {
+    let answerDisplay = document.getElementById('answerDisplay');
+    let lastQuestionDisplay = document.getElementById('lastQuestionDisplay');
+    lastQuestionDisplay.innerHTML = lastQuestion;
+    answerDisplay.innerHTML = `Were you correct?: ${wasCorrect}. Last Correct Answer: ${correctOption}`;
+    answerDisplay.style.display = 'block';
+    lastQuestionDisplay.style.display = 'none';
+}
+function showLastQuestion() {
+    lastQuestionDisplay.style.display = 'none';
 }
 
 function nextQuestion() {
