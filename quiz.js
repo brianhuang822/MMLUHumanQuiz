@@ -166,7 +166,10 @@ function checkAnswer(selectedOption) {
     if (selectedOption === correctOption) {
         correctAnswers++;
     }
-        displayCorrectAnswer(questions[currentQuestionIndex].question, questions[currentQuestionIndex].options[correctOption.charCodeAt()-65], selectedOption === correctOption);
+        displayCorrectAnswer(questions[currentQuestionIndex].question,
+         questions[currentQuestionIndex].options[correctOption.charCodeAt()-65],
+         selectedOption === correctOption,
+         questions[currentQuestionIndex].options[selectedOption.charCodeAt()-65]);
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
         displayQuestion();
@@ -174,11 +177,11 @@ function checkAnswer(selectedOption) {
         endQuiz();
     }
 }
-function displayCorrectAnswer(lastQuestion, correctOption, wasCorrect) {
+function displayCorrectAnswer(lastQuestion, correctOption, wasCorrect, yourSelection) {
     let answerDisplay = document.getElementById('answerDisplay');
     let lastQuestionDisplay = document.getElementById('lastQuestionDisplay');
     lastQuestionDisplay.innerHTML = lastQuestion;
-    answerDisplay.innerHTML = `Were you correct?: ${wasCorrect}. Last Correct Answer: ${correctOption}`;
+    answerDisplay.innerHTML = `Were you correct?: ${wasCorrect}. <br/> Last Correct Answer: ${correctOption} <br/> You Selected: ${yourSelection} <br/>`;
     answerDisplay.style.display = 'block';
     lastQuestionDisplay.style.display = 'none';
 }
