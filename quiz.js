@@ -166,7 +166,7 @@ function checkAnswer(selectedOption) {
     if (selectedOption === correctOption) {
         correctAnswers++;
     }
-        displayCorrectAnswer(questions[currentQuestionIndex].question, question[currentQuestionIndex].options[String.fromCharCode(65 + correctOption)], selectedOption === correctOption);
+        displayCorrectAnswer(questions[currentQuestionIndex].question, questions[currentQuestionIndex].options[String.fromCharCode(65 + correctOption)], selectedOption === correctOption);
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
         displayQuestion();
