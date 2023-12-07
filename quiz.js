@@ -39,7 +39,7 @@ function parseCsvLine(line) {
             // If we hit a comma and we're not within quotes, push the field to the result
             result.push(current.trim());
             current = '';
-        } else if (
+        }
         else {
             current += char;
         }
