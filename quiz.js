@@ -21,12 +21,42 @@ function fetchCsv(url) {
 
 function parseCsv(csv) {
     const lines = csv.split('\n');
-    return lines.map(line => {
-        const [question, optA, optB, optC, optD, answer] = line.split(',');
-        return { question, options: [optA, optB, optC, optD], answer };
-    });
+    return lines.map(line => parseCsvLine(line));
 }
 
+function parseCsvLine(line) {
+    let result = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+
+        if (char === '"' && (i === 0 || line[i - 1] === ',')) {
+            // Toggle the inQuotes flag if we're at the start of a new quoted field
+            inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+            // If we hit a comma and we're not within quotes, push the field to the result
+            result.push(current.trim());
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+
+    // Push the last field, as it's not followed by a comma
+    result.push(current.trim());
+
+    // Assuming the format: question, option A, option B, option C, option D, answer
+    if (result.length === 6) {
+        const [question, optA, optB, optC, optD, answer] = result;
+        return { question, options: [optA, optB, optC, optD], answer };
+    } else {
+        // Handle error or return a default value
+        console.error('Invalid CSV format');
+        return null;
+    }
+}
 function loadQuestions(subject) {
     const url = `./${subject}`; // Path to the CSV file
     fetchCsv(url)
