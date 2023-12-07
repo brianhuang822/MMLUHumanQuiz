@@ -54,6 +54,8 @@ function parseCsvLine(line) {
     } else {
         // Handle error or return a default value
         console.error('Invalid CSV format');
+        console.error(line);
+
         return null;
     }
 }
