@@ -1,0 +1,7 @@
+Loaded dataset of MMLU and put it into a page to let the laypeople to test their skill against the dataset
+
+Code was mostly generated using GPT-4, was an experience to see how it did.
+
+GPT-4 did a pretty good job minus a few bugs here and there which needed human intervention, but otherwise it let me make this site in 1 hour instead of 5 hours
+
+Go to https://brianhuang822.github.io/MMLUHumanQuiz/ for static website

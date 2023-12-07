@@ -4,17 +4,21 @@
     <title>Quiz App</title>
 </head>
 <style>
+        html {
+
+height: 100%;
+  }
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            height: 100%;
             background-color: #f4f4f4;
         }
 
-        header, footer {
+        header, #footer {
             background-color: #333;
             color: white;
             text-align: center;
@@ -37,6 +41,9 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
+        #content {
+  flex: 1 0 auto;
+}
 
         select, button {
             padding: 10px;
@@ -67,30 +74,31 @@
             text-align: center;
         }
 
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+        #footer {
+            flex-shrink: 0;
         }
+
 
 </style>
 <body>
-<div id="startContainer">
-    <h1>Are you smarter than Generative AI?</h1>
-    <select id="subjectSelect">
-        <!-- Options will be populated here -->
-    </select>
-    <button onclick="startQuiz()">Start Quiz</button>
-</div>
-<div id="quizContainer" style="display:none;">
-    <div id="question"></div>
-    <div id="options">
-        <!-- Options will be populated here -->
+<div id="content">
+    <div id="startContainer">
+        <h1>Are you smarter than Generative AI?</h1>
+        <select id="subjectSelect">
+            <!-- Options will be populated here -->
+        </select>
+        <button onclick="startQuiz()">Start Quiz</button>
     </div>
-    <button onclick="nextQuestion()">Next</button>
-</div>
-<div id="stats">
-    <!-- Statistics will be displayed here -->
+    <div id="quizContainer" style="display:none;">
+        <div id="question"></div>
+        <div id="options">
+            <!-- Options will be populated here -->
+        </div>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+    <div id="stats">
+        <!-- Statistics will be displayed here -->
+    </div>
 </div>
 <div id="footer">
     <h3>Last Updated benchmark</h3>
