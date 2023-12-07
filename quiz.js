@@ -99,7 +99,7 @@ function loadQuestions(subject, option) {
 
         let promises = csvs.map(csv => fetchCsv(csv)
         .then(parseCsv));
-        Promises.all(promises).then((values) => {
+        Promise.all(promises).then((values) => {
             questions = shuffle(values.flat());
         }).then (() => {
             displayQuestion()});
