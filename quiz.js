@@ -73,6 +73,7 @@ function startQuiz() {
     currentSubject = document.getElementById('subjectSelect').value;
     loadQuestions(currentSubject);
     document.getElementById('quizContainer').style.display = 'block';
+    document.getElementById('startContainer').style.display = 'none';
 }
 
 function displayQuestion() {
