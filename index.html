@@ -87,7 +87,20 @@ height: 100%;
         <select id="subjectSelect">
             <!-- Options will be populated here -->
         </select>
-        <button onclick="startQuiz()">Start Quiz</button>
+        <button onclick="startQuiz(0)">Start Quiz</button>
+        <br/>
+        or
+        <br/>
+        <button onclick="startQuiz(1)">Start Quiz (everything)</button>
+        <br/>
+        or
+        <br/>
+        <button onclick="startQuiz(2)">Start Quiz (non hs/elementary)</button>
+        <br/>
+        or
+        <br/>
+        <button onclick="startQuiz(3)">Start Quiz (non hs/elementary/college)</button>
+
     </div>
     <div id="quizContainer" style="display:none;">
         <div id="question"></div>

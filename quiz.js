@@ -2,6 +2,7 @@ let currentSubject;
 let questions = [];
 let currentQuestionIndex = 0;
 let correctAnswers = 0;
+const subjects = ["abstract_algebra.csv", "anatomy.csv", "astronomy.csv", "business_ethics.csv", "clinical_knowledge.csv", "college_biology.csv", "college_chemistry.csv", "college_computer_science.csv", "college_mathematics.csv", "college_medicine.csv", "college_physics.csv", "computer_security.csv", "conceptual_physics.csv", "econometrics.csv", "electrical_engineering.csv", "elementary_mathematics.csv", "formal_logic.csv", "global_facts.csv", "high_school_biology.csv", "high_school_chemistry.csv", "high_school_computer_science.csv", "high_school_european_history.csv", "high_school_geography.csv", "high_school_government_and_politics.csv", "high_school_macroeconomics.csv", "high_school_mathematics.csv", "high_school_microeconomics.csv", "high_school_physics.csv", "high_school_psychology.csv", "high_school_statistics.csv", "high_school_us_history.csv", "high_school_world_history.csv", "human_aging.csv", "human_sexuality.csv", "international_law.csv", "jurisprudence.csv", "logical_fallacies.csv", "machine_learning.csv", "management.csv", "marketing.csv", "medical_genetics.csv", "miscellaneous.csv", "moral_disputes.csv", "moral_scenarios.csv", "nutrition.csv", "philosophy.csv", "prehistory.csv", "professional_accounting.csv", "professional_law.csv", "professional_medicine.csv", "professional_psychology.csv", "public_relations.csv", "security_studies.csv", "sociology.csv", "us_foreign_policy.csv", "virology.csv", "world_religions.csv"];
 
 //https://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -25,7 +26,6 @@ function shuffle(array) {
 
 function loadSubjects() {
     // Example subjects - replace with actual file names
-    const subjects = ["abstract_algebra.csv", "anatomy.csv", "astronomy.csv", "business_ethics.csv", "clinical_knowledge.csv", "college_biology.csv", "college_chemistry.csv", "college_computer_science.csv", "college_mathematics.csv", "college_medicine.csv", "college_physics.csv", "computer_security.csv", "conceptual_physics.csv", "econometrics.csv", "electrical_engineering.csv", "elementary_mathematics.csv", "formal_logic.csv", "global_facts.csv", "high_school_biology.csv", "high_school_chemistry.csv", "high_school_computer_science.csv", "high_school_european_history.csv", "high_school_geography.csv", "high_school_government_and_politics.csv", "high_school_macroeconomics.csv", "high_school_mathematics.csv", "high_school_microeconomics.csv", "high_school_physics.csv", "high_school_psychology.csv", "high_school_statistics.csv", "high_school_us_history.csv", "high_school_world_history.csv", "human_aging.csv", "human_sexuality.csv", "international_law.csv", "jurisprudence.csv", "logical_fallacies.csv", "machine_learning.csv", "management.csv", "marketing.csv", "medical_genetics.csv", "miscellaneous.csv", "moral_disputes.csv", "moral_scenarios.csv", "nutrition.csv", "philosophy.csv", "prehistory.csv", "professional_accounting.csv", "professional_law.csv", "professional_medicine.csv", "professional_psychology.csv", "public_relations.csv", "security_studies.csv", "sociology.csv", "us_foreign_policy.csv", "virology.csv", "world_religions.csv"];
     const select = document.getElementById('subjectSelect');
     subjects.forEach(subject => {
         let option = document.createElement('option');
@@ -80,21 +80,45 @@ function parseCsvLine(line) {
         return null;
     }
 }
-function loadQuestions(subject) {
+function loadQuestions(subject, option) {
+    if (subject !== null) {
     const url = `./${subject}`; // Path to the CSV file
     fetchCsv(url)
         .then(parseCsv)
         .then(loadedQuestions => {
             questions = shuffle(loadedQuestions);
-            currentQuestionIndex = 0;
-            correctAnswers = 0;
             displayQuestion();
         });
+
+    } else {
+
+        const csvs = option === 1 ? subjects
+        :  option === 2 ?
+        subjects.filter(subject => !subject.includes("elementary") && !subject.includes("high_school"))
+        : subjects.filter(subject => !subject.includes("elementary") && !subject.includes("high_school") && !subject.includes("college"));
+
+        let promises = csvs.map(csv => fetchCsv(csv)
+        .then(parseCsv));
+        Promises.all(promises).then((values) => {
+            questions = shuffle(values.flat());
+        }).then (() => {
+            displayQuestion()});
+
+    }
 }
 
-function startQuiz() {
-    currentSubject = document.getElementById('subjectSelect').value;
-    loadQuestions(currentSubject);
+function startQuiz(option) {
+    if (option === 0) {
+        currentSubject = document.getElementById('subjectSelect').value;
+        loadQuestions(currentSubject);
+    } else if (option === 1) {
+        loadQuestions(null, 1);
+    }
+     else if (option === 2) {
+        loadQuestions(null, 2);
+    }else if (option === 3) {
+        loadQuestions(null, 3);
+    }
     document.getElementById('quizContainer').style.display = 'block';
     document.getElementById('startContainer').style.display = 'none';
 }
