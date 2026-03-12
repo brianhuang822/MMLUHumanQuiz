@@ -500,7 +500,7 @@
         .benchmarks {
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 1.25rem 2rem;
             flex-wrap: wrap;
             margin-bottom: 0.75rem;
         }
@@ -587,7 +587,7 @@
     <!-- ── Start Screen ── -->
     <div id="startContainer">
         <div class="intro-card">
-            As of late 2023, AI models like ChatGPT and Gemini claim to reach human-expert performance on MMLU.
+            Top AI models now score <strong>90%+</strong> on MMLU, surpassing human-expert level (~89.8%).
             Pick a topic and see how <em>you</em> stack up — or copy any question into your favourite AI to watch it solve it.
         </div>
 
@@ -651,11 +651,19 @@
 </main>
 
 <footer>
-    <h3>Latest MMLU Benchmark Scores</h3>
+    <h3>MMLU Benchmark Scores (2025)</h3>
     <div class="benchmarks">
         <div class="benchmark-item">
-            <span class="benchmark-score">90.04%</span>
-            <span class="benchmark-name">Gemini Ultra</span>
+            <span class="benchmark-score">92.3%</span>
+            <span class="benchmark-name">o1-preview</span>
+        </div>
+        <div class="benchmark-item">
+            <span class="benchmark-score">90.4%</span>
+            <span class="benchmark-name">Claude 3.5 Sonnet</span>
+        </div>
+        <div class="benchmark-item">
+            <span class="benchmark-score">88.7%</span>
+            <span class="benchmark-name">GPT-4o</span>
         </div>
         <div class="benchmark-item">
             <span class="benchmark-score">86.5%</span>
@@ -666,7 +674,11 @@
             <span class="benchmark-name">GPT-3.5</span>
         </div>
     </div>
-    <div>Source: <a href="https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu" target="_blank">paperswithcode.com</a></div>
+    <div style="margin-bottom:0.4rem;">
+        Top models now exceed <strong style="color:var(--text);">90%</strong> — the benchmark is largely saturated.
+        Frontier evals have shifted to <a href="https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu" target="_blank">MMLU-Pro</a> and GPQA.
+    </div>
+    <div>Sources: <a href="https://klu.ai/llm-leaderboard" target="_blank">klu.ai leaderboard</a> · <a href="https://artificialanalysis.ai/evaluations/mmlu-pro" target="_blank">Artificial Analysis MMLU-Pro</a></div>
 </footer>
 
 <script src="quiz.js"></script>
