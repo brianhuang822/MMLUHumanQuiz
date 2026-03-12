@@ -1,151 +1,674 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Quiz App</title>
-</head>
-<style>
-        html {
-height: 100%;
-        padding-left: 10%;
-        padding-right: 10%;
-        font-size: xx-large;
-  }
-  button, select {
-  font-size: xx-large;
-  }
-        body {
-            font-family: 'Arial', sans-serif;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMLU Human Quiz — Are You Smarter Than AI?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #e0e7ff;
+            --success: #22c55e;
+            --success-light: #dcfce7;
+            --error: #ef4444;
+            --error-light: #fee2e2;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+            --radius: 14px;
+            --radius-sm: 10px;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Inter', 'Arial', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            height: 100%;
-            background-color: #f4f4f4;
+            line-height: 1.6;
         }
 
-        header, #footer {
+        /* ── Header ── */
+        header {
+            background: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%);
+            color: white;
             text-align: center;
-            padding: 1rem;
+            padding: 1.5rem 1rem 1.75rem;
         }
 
+        header h1 {
+            font-size: clamp(1.2rem, 4.5vw, 1.7rem);
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        header p {
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            opacity: 0.8;
+            margin-top: 0.35rem;
+        }
+
+        /* ── Main ── */
         main {
             flex: 1;
-            padding: 20px;
+            padding: 1.25rem 1rem 2rem;
+            max-width: 680px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ── Start Screen ── */
+        #startContainer {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-
+            gap: 1.25rem;
+            margin-top: 0.25rem;
         }
 
-        #quizContainer {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+        .intro-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1.1rem 1.25rem;
+            box-shadow: var(--shadow);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.75;
         }
-        #content {
-  flex: 1 0 auto;
-}
 
-        select, button {
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            background-color: #fff;
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
+        }
+
+        .subject-row {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        #subjectSelect {
+            flex: 1;
+            min-width: 0;
+            padding: 0.75rem 2.25rem 0.75rem 0.9rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--card);
+            color: var(--text);
             cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.7rem center;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        button:hover {
-            background-color: #eee;
+        #subjectSelect:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .btn-start-topic {
+            padding: 0.75rem 1.1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-start-topic:hover { background: var(--primary-dark); }
+        .btn-start-topic:active { transform: scale(0.97); }
+
+        .quiz-modes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.65rem;
+        }
+
+        .mode-card {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0.9rem 1rem;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.1s;
+            text-align: left;
+            font-family: inherit;
+        }
+
+        .mode-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .mode-card:active { transform: scale(0.98); }
+
+        .mode-card:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .mode-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.2rem;
+        }
+
+        .mode-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* ── Quiz Container ── */
+        #quizContainer {
+            display: none;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        /* ── Progress ── */
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .progress-bar-track {
+            background: var(--border);
+            border-radius: 999px;
+            height: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), #7c3aed);
+            border-radius: 999px;
+            transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+            width: 0%;
+        }
+
+        /* ── Question Card ── */
+        .question-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1.25rem 1.25rem 1.1rem;
+            box-shadow: var(--shadow);
         }
 
         #question {
-            margin-bottom: 20px;
+            font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+            font-weight: 500;
+            line-height: 1.7;
+            color: var(--text);
+        }
+
+        /* ── Options ── */
+        #options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         #options button {
-            display: block;
             width: 100%;
             text-align: left;
-            margin-bottom: 10px;
+            padding: 0.8rem 0.9rem;
+            font-size: clamp(0.85rem, 2.2vw, 0.92rem);
+            font-family: inherit;
+            font-weight: 400;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s, transform 0.1s;
+            color: var(--text);
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            min-height: 48px;
         }
 
+        #options button:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            transform: translateX(2px);
+        }
+
+        #options button:active:not(:disabled) {
+            transform: scale(0.99);
+        }
+
+        #options button:disabled {
+            cursor: default;
+            transform: none;
+        }
+
+        .option-letter {
+            flex-shrink: 0;
+            width: 1.55rem;
+            height: 1.55rem;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+            margin-top: 1px;
+        }
+
+        #options button:hover:not(:disabled) .option-letter {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        #options button.correct {
+            background: var(--success-light);
+            border-color: var(--success);
+        }
+
+        #options button.correct .option-letter {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        #options button.incorrect {
+            background: var(--error-light);
+            border-color: var(--error);
+        }
+
+        #options button.incorrect .option-letter {
+            background: var(--error);
+            border-color: var(--error);
+            color: white;
+        }
+
+        /* ── Feedback ── */
+        .feedback-card {
+            background: var(--card);
+            border-radius: var(--radius-sm);
+            padding: 0.9rem 1.1rem;
+            box-shadow: var(--shadow);
+            font-size: 0.875rem;
+            display: none;
+            border-left: 4px solid var(--border);
+        }
+
+        .feedback-card.correct { border-left-color: var(--success); }
+        .feedback-card.incorrect { border-left-color: var(--error); }
+
+        .feedback-result {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .feedback-result.correct { color: var(--success); }
+        .feedback-result.incorrect { color: var(--error); }
+
+        .feedback-detail {
+            color: var(--text-muted);
+            line-height: 1.65;
+            font-size: 0.85rem;
+        }
+
+        /* ── Stats ── */
         #stats {
-            margin-top: 20px;
+            background: var(--card);
+            border-radius: var(--radius-sm);
+            padding: 0.9rem 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .stat-item {
             text-align: center;
         }
 
-        #footer {
-            flex-shrink: 0;
+        .stat-value {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.1;
         }
 
+        .stat-label {
+            font-size: 0.63rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 0.15rem;
+        }
 
+        /* ── Action Buttons ── */
+        .action-row {
+            display: flex;
+            gap: 0.6rem;
+        }
 
+        .btn {
+            padding: 0.75rem 1.1rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            min-height: 44px;
+        }
 
-</style>
+        .btn:active { transform: scale(0.97); }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover { background: var(--primary-dark); }
+
+        .btn-secondary {
+            background: var(--card);
+            color: var(--text-muted);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        #nextBtn { display: none; }
+
+        /* ── End Screen ── */
+        .end-screen {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .end-screen h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .final-score {
+            font-size: clamp(3.5rem, 12vw, 5rem);
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        .final-sub {
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .restart-btn {
+            margin-top: 1.75rem;
+            padding: 0.85rem 2.25rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .restart-btn:hover { background: var(--primary-dark); }
+        .restart-btn:active { transform: scale(0.97); }
+
+        /* ── Footer ── */
+        footer {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        footer h3 {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.6rem;
+        }
+
+        .benchmarks {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .benchmark-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.1rem;
+        }
+
+        .benchmark-score {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .benchmark-name {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover { text-decoration: underline; }
+
+        /* ── Animations ── */
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-card {
+            animation: fadeSlideIn 0.22s ease;
+        }
+
+        .feedback-card[style*="block"] {
+            animation: fadeSlideIn 0.2s ease;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 480px) {
+            .quiz-modes {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .subject-row {
+                flex-direction: column;
+            }
+
+            .btn-start-topic {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .action-row {
+                flex-direction: column;
+            }
+
+            #nextBtn { width: 100%; justify-content: center; }
+        }
+
+        @media (min-width: 640px) {
+            main { padding: 1.75rem 1.5rem 2.5rem; }
+        }
+    </style>
+</head>
 <body>
-<div id="content">
+
+<header>
+    <h1>Are You Smarter Than Generative AI?</h1>
+    <p>Test yourself on the MMLU benchmark used to evaluate ChatGPT, Gemini &amp; more</p>
+</header>
+
+<main>
+
+    <!-- ── Start Screen ── -->
     <div id="startContainer">
-        <h1>Are you smarter than Generative AI?</h1>
+        <div class="intro-card">
+            As of late 2023, AI models like ChatGPT and Gemini claim to reach human-expert performance on MMLU.
+            Pick a topic and see how <em>you</em> stack up — or copy any question into your favourite AI to watch it solve it.
+        </div>
+
         <div>
-            As of December 2023, Generative AI (ChatGPT, Bard, etc) has taken over the world in showing how intelligent
-            they are, or researchers claim they have reached human expert levels.
-            This webapp renders a quiz interface for the everyday person to try the question bank for themselves, as
-            well as copy questions into their favourite AI to see how it solves the problem.
+            <p class="section-label">Select a specific topic</p>
+            <div class="subject-row">
+                <select id="subjectSelect"></select>
+                <button class="btn-start-topic" onclick="startQuiz(0)">Start Quiz</button>
+            </div>
         </div>
-        <br/>
-        Select Your topic:
-        <br/>
-        <select id="subjectSelect">
-            <!-- Options will be populated here -->
-        </select>
-        <button onclick="startQuiz(0)">Start Quiz</button>
-        <br/>
-        or
-        <br/>
-        <button onclick="startQuiz(1)">Start Quiz (everything)</button>
-        <br/>
-        or
-        <br/>
-        <button onclick="startQuiz(2)">Start Quiz (non hs/elementary)</button>
-        <br/>
-        or
-        <br/>
-        <button onclick="startQuiz(3)">Start Quiz (non hs/elementary/college)</button>
 
-    </div>
-    <div id="quizContainer" style="display:none;">
-        <div id="question"></div>
-        <div id="options">
-            <!-- Options will be populated here -->
+        <div>
+            <p class="section-label">Or choose a broader mode</p>
+            <div class="quiz-modes">
+                <button class="mode-card" onclick="startQuiz(1)">
+                    <div class="mode-title">Everything</div>
+                    <div class="mode-desc">All 57 subjects shuffled together</div>
+                </button>
+                <button class="mode-card" onclick="startQuiz(2)">
+                    <div class="mode-title">Advanced</div>
+                    <div class="mode-desc">No elementary or high school</div>
+                </button>
+                <button class="mode-card" onclick="startQuiz(3)">
+                    <div class="mode-title">Expert</div>
+                    <div class="mode-desc">Professional &amp; graduate level only</div>
+                </button>
+            </div>
         </div>
-        <button onclick="nextQuestion()">Next</button>
-        <br/>
-        <hr/>
-        <br/>
-        <div id="lastQuestionDisplay" style="display:none;"></div>
-        <br/>
-        <div id="answerDisplay" style="display:none;"></div>
-        <div id="copyData" style="display:none;"></div>
-        <button onclick="showLastQuestion()">Show Last Question</button>
-        <button onclick="copyLastQuestion()">Copy Last Question to Clipboard</button>
-        <!-- Correct answer will be displayed here -->
     </div>
 
-</div>
-<div id="stats">
-    <!-- Statistics will be displayed here -->
-</div>
-<div id="footer">
-    <h3>Last Updated benchmark</h3>
-    Gemini Ultra: <b>90.04%</b>
-    GPT-4: <b>86.5%</b>
-    GPT-3.5: <b>70%</b>
-    <i>Source: <a href="https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu" target="_blank">https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu</a></i>
-</div>
-</body>
+    <!-- ── Quiz Screen ── -->
+    <div id="quizContainer">
+        <div class="progress-header">
+            <span id="progressText">Question 1</span>
+            <span id="progressFraction">0 / 0</span>
+        </div>
+        <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+
+        <div class="question-card">
+            <div id="question"></div>
+        </div>
+
+        <div id="options"></div>
+
+        <div class="feedback-card" id="answerDisplay"></div>
+
+        <div id="stats"></div>
+
+        <div class="action-row">
+            <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next Question &rarr;</button>
+            <button class="btn btn-secondary" onclick="copyLastQuestion()" title="Copy question to clipboard">Copy</button>
+        </div>
+    </div>
+
+    <!-- Hidden data store -->
+    <div id="copyData" style="display:none;"></div>
+    <div id="lastQuestionDisplay" style="display:none;"></div>
+
+</main>
+
+<footer>
+    <h3>Latest MMLU Benchmark Scores</h3>
+    <div class="benchmarks">
+        <div class="benchmark-item">
+            <span class="benchmark-score">90.04%</span>
+            <span class="benchmark-name">Gemini Ultra</span>
+        </div>
+        <div class="benchmark-item">
+            <span class="benchmark-score">86.5%</span>
+            <span class="benchmark-name">GPT-4</span>
+        </div>
+        <div class="benchmark-item">
+            <span class="benchmark-score">70%</span>
+            <span class="benchmark-name">GPT-3.5</span>
+        </div>
+    </div>
+    <div>Source: <a href="https://paperswithcode.com/sota/multi-task-language-understanding-on-mmlu" target="_blank">paperswithcode.com</a></div>
+</footer>
+
 <script src="quiz.js"></script>
+</body>
 </html>
